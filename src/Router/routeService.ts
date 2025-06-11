@@ -1,8 +1,6 @@
 import { Application, Router } from "express"
 import RouteEngine from "./router"
-import HomeRouter from '../components/home/router'
-
-
+import UserRouter from '../components/User/router'
 class RouteService {
     public app: Application
     private router: RouteEngine
@@ -14,7 +12,7 @@ class RouteService {
     }
 
     public bindRouter() {
-        this.router.registerRouter("/home", HomeRouter)
+        this.router.registerRouter("/api/v1/users", UserRouter)
     }
     public run() {
         this.router.getRouters().forEach((router: Router, route: string) => {
