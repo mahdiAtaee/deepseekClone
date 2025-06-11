@@ -8,9 +8,6 @@ export class UserController {
     }
 
     public async index(req: Request, res: Response, next: NextFunction): Promise<void> {
-        console.log('userService is:', this.UserServices)
-
-
         const users = await this.UserServices.getUser(1)
         res.send({
             success: true,

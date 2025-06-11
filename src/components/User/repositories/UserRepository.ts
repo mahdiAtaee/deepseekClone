@@ -9,7 +9,7 @@ export class UserRepository implements IUserRepository {
         this.prisma = prisma
     }
     async findOne(ID: number): Promise<any> {
-        const result = await this.prisma.User.findUnique({ where: { ID } });
+        const result = await this.prisma.User.findUnique({ where: { id:ID } });
         return result
     }
     async findMany(params: any): Promise<any[]> {
