@@ -2,7 +2,6 @@ import * as express from "express"
 import { Application } from "express";
 import RouteService from './Router/routeService'
 import boot from './boot'
-
 class App {
     public app: Application
     public port: number
@@ -14,8 +13,8 @@ class App {
         this.router = new RouteService(this.app)
     }
 
-    public start() {
-        boot(this.app)
+    public async start() {
+        await boot(this.app)
         this.router.run()
         this.app.listen(this.port, () => {
             console.log("app is running on port", this.port);

@@ -5,6 +5,6 @@ const router:Router = Router()
 
 const api = makeInvoker(MessageController)
 
-router.get('/', api('index'))
+router.post('/', api('index'))
 
 export default router
