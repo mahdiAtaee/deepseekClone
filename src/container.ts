@@ -4,12 +4,23 @@ import { createContainer, asClass, asValue } from 'awilix'
 // redis
 import createRedisClient from "./connections/redis"
 
+// token service
+import { TokenService } from "./services/TokenService"
+
 // Otp Service
 import { OtpService } from "./services/OtpService"
 
 // MailService
 import { MailTrap } from "./services/notification/Mail/Provider/Mailtrap"
 import { MailService } from "./services/notification/Mail/MailService"
+
+// Auth
+import { AuthService } from './components/Auth/repositories/AuthService'
+import { AuthRepository } from './components/Auth/repositories/AuthRepository'
+
+// Register
+import { RegisterController } from "./components/Auth/register/Controller"
+
 
 // User
 import { UserRepository } from './components/User/repositories/UserRepository'
@@ -23,9 +34,6 @@ import { MessageService } from "./components/Message/repositories/MessageService
 
 // Chat
 
-
-// Register
-import { RegisterController } from "./components/Auth/register/Controller"
 
 
 export default async function initContainer() {
@@ -47,14 +55,20 @@ export default async function initContainer() {
         // Redis
         redis: asValue(redisClient),
 
+        // Auth
+        authService: asClass(AuthService).scoped(),
+        authRepository: asClass(AuthRepository).scoped(),
+
         // User
         userService: asClass(UserService).scoped(),
         userRepository: asClass(UserRepository).scoped(),
         userController: asClass(UserController).scoped(),
+
         // Message
         messageService: asClass(MessageService).scoped(),
         messageRepository: asClass(MessageRepository).scoped(),
         messageController: asClass(MessageController).scoped(),
+
         // Chat
 
         // Register
@@ -65,7 +79,10 @@ export default async function initContainer() {
         mailService: asClass(MailService).scoped(),
 
         // OTP SERVICE
-        otpService: asClass(OtpService).scoped()
+        otpService: asClass(OtpService).scoped(),
+
+        // Token Service
+        tokenService: asClass(TokenService).scoped()
     })
 
 

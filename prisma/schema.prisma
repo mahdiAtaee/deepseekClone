@@ -16,7 +16,26 @@ datasource db {
 
 
 model User {
-  id     Int  @id @default(autoincrement())
-  name   String
+  id     String  @id @default(cuid())
+  name   String?
   email  String @unique
+  created_at DateTime @default(now())
+  chats  Chat[]
+}
+
+model Chat {
+  id        String     @id @default(cuid())
+  title     String?
+  createdAt DateTime   @default(now())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  messages  Message[]
+}
+
+model Message {
+  id        String     @id @default(cuid())
+  content   String
+  createdAt DateTime   @default(now())
+  chatId    String
+  chat      Chat       @relation(fields: [chatId], references: [id])
 }
