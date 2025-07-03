@@ -50,11 +50,11 @@ export class RegisterController {
         const findUser = await this.AuthService.findUser(email)
         if (!findUser) {
             user = await this.AuthService.createUser(email)
-        }else{
+        } else {
             user = findUser
         }
 
-        if(!user){
+        if (!user) {
             throw new Error('Oops! something was wrong.')
         }
 
@@ -73,5 +73,41 @@ export class RegisterController {
             message: "user successfully login in app.",
             token: accessToken
         })
+    }
+
+    public async refreshToken(req: Request, res: Response, next: NextFunction) {
+        const token = req.cookies['refresh-token']
+        console.log('cookie',token);
+        
+        if (!token) return res.status(401).send("No refresh token");
+
+        try {
+
+            const { accessToken, refreshToken } = await this.TokenService.reassignToken(token)
+            console.log('new refresh token', refreshToken);
+            
+            if (!refreshToken) return res.status(401).send({
+                success: false,
+                message: "Unauthorized!"
+            });
+
+            res.cookie('refresh-token', refreshToken, {
+                httpOnly: true,
+                secure: false,
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                sameSite: 'lax'
+            })
+
+            res.status(200).send({
+                success: true,
+                token: accessToken,
+                message: "new Access Token Generated."
+            })
+
+        } catch (error) {
+            res.status(401).send("Invalid refresh token");
+            next(error)
+        }
+
     }
 }

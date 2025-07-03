@@ -8,13 +8,14 @@ import initContainer from '../container';
 
 export default async function boot(app: Application) {
     const container = await initContainer()
+    app.use(cookieParser())
     app.use(cors(
         {
-            origin: true,
+            origin: 'http://localhost:5173',
+            // origin: true,
             credentials: true
 
         }))
-    app.use(cookieParser())
     app.use(bodyParser.json())
     app.use(express.json());
     app.use(scopePerRequest(container));

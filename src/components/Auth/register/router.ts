@@ -7,5 +7,6 @@ const api = makeInvoker(RegisterController)
 
 router.post('/', api('createUser'))
 router.post('/verify', api('verify'))
+router.get('/refresh', api('refreshToken'))
 
 export default router
