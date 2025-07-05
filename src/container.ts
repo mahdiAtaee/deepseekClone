@@ -33,7 +33,9 @@ import { MessageRepository } from "./components/Message/repositories/MessageRepo
 import { MessageService } from "./components/Message/repositories/MessageService"
 
 // Chat
-
+import { ChatService } from "./components/Chat/repositories/ChatService"
+import { ChatController } from "./components/Chat/Controller"
+import { ChatRepository } from "./components/Chat/repositories/ChatRepository"
 
 
 export default async function initContainer() {
@@ -70,6 +72,9 @@ export default async function initContainer() {
         messageController: asClass(MessageController).scoped(),
 
         // Chat
+        chatService: asClass(ChatService).scoped(),
+        chatController: asClass(ChatController).scoped(),
+        chatRepository: asClass(ChatRepository).scoped(),
 
         // Register
         registerController: asClass(RegisterController).scoped(),

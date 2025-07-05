@@ -7,5 +7,6 @@ const router: Router = Router()
 const api = makeInvoker(MessageController)
 
 router.post('/', Auth as unknown as RequestHandler, api('index'))
+router.get('/list/:chatId', Auth as unknown as RequestHandler, api('messageList'))
 
 export default router

@@ -4,6 +4,7 @@ import { TokenService } from "../services/TokenService";
 
 
 interface ScopedRequest extends Request {
+    user: any;
     container: AwilixContainer
 }
 
@@ -25,7 +26,9 @@ export function Auth(req: ScopedRequest, res: Response, next: NextFunction) {
                 message: "Invalid token"
             });
         }
-
+        console.log('auth middleware', user);
+        
+        req.user = user
         next()
     } catch (error) {
         console.error("auth error:", error);

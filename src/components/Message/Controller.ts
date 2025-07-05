@@ -11,6 +11,7 @@ export class MessageController {
 
     public async index(req: Request, res: Response, next: NextFunction) {
         const userPrompt = req.body.prompt
+        const chatId = req.body.chatId
         const lang = detectLanguage(userPrompt)
 
         const systemPrompt = lang === "fa"
@@ -47,9 +48,42 @@ export class MessageController {
         const reply = response.data.choices[0].message.content
         console.log("🤖 پاسخ مدل:\n", reply)
 
+        const content = {
+            userMessage: userPrompt,
+            aiMessage: reply
+        }
+
+        const saveMessage = await this.MessageServiceInstance.store(JSON.stringify(content), chatId)
+
+
         res.send({
             success: true,
             reply
         })
+    }
+
+    public async messageList(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { chatId } = req.params
+            if (!chatId) {
+                res.status(400).send({
+                    success: false,
+                    message: "chat ID is required!"
+                })
+            }
+            const messages = await this.MessageServiceInstance.getAllMessage(chatId)
+
+            res.status(200).send({
+                success: true,
+                messages
+            })
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({
+                success: false,
+                message: "something was wrong."
+            })
+        }
     }
 }
