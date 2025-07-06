@@ -41,7 +41,7 @@ export class ChatController {
         try {
             const { title } = req.body
             const user = req.user
-            
+
             const userId: string = user.id as unknown as string
             const result = await this.chatService.newSession(userId, title)
             if (!result) {
@@ -64,5 +64,39 @@ export class ChatController {
             })
         }
 
+    }
+
+    public async searchChat(req: ScopedRequest, res: Response, next: NextFunction) {
+        try {
+            const { date } = req.body
+
+            if (!date) {
+                return res.status(400).send({
+                    success: false,
+                    message: "chat ID is required."
+                })
+            }
+
+            const newDate = new Date(date)
+
+            const chat = await this.chatService.find(newDate)
+            if (!chat) {
+                return res.status(404).send({
+                    success: false,
+                    message: "Oops. chat Notfound."
+                })
+            }
+            res.status(200).send({
+                success: true,
+                chat
+            })
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({
+                success: false,
+                message: "something was wrong"
+            })
+        }
     }
 }

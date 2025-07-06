@@ -11,6 +11,16 @@ export class ChatRepository implements IChatRepository {
     public async findOne(ID: number): Promise<Chat> {
         throw new Error("Method not implemented.");
     }
+    public async findByDate(Date: string | Date): Promise<Chat[]> {
+        const chats = await this.Prisma.chat.findMany({
+            where: {
+                createdAt: {
+                    gte: Date
+                }
+            }
+        })
+        return chats
+    }
     public async findMany(params: any): Promise<Chat[]> {
         const chats = await this.Prisma.chat.findMany({
             where: {

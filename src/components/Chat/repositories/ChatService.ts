@@ -13,7 +13,12 @@ export class ChatService {
     }
 
     public async newSession(userId: string, title?: string) {
-        const result = await this.ChatRepository.create({ userId , title })
+        const result = await this.ChatRepository.create({ userId, title })
+        return result
+    }
+
+    public async find(date: Date) {
+        const result = await this.ChatRepository.findByDate(date)
         return result
     }
 }
