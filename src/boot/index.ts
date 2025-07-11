@@ -5,9 +5,12 @@ import { Application } from "express";
 import * as express from 'express';
 import { scopePerRequest, loadControllers } from 'awilix-express';
 import initContainer from '../container';
+import * as multer from 'multer'
 
 export default async function boot(app: Application) {
     const container = await initContainer()
+    const upload = multer({ dest: '/tmp' })
+    app.use(upload.single('file'))
     app.use(cookieParser())
     app.use(cors(
         {
